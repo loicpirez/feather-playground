@@ -59,8 +59,23 @@ class Messages {
   }
 }
 
+const setTimestamp = name => {
+  return async context => {
+    context.data[name] = new Date()
+
+    return context
+  }
+}
+
 // Initialize the messages service by creating
 // a new instance of our class
 app.use('messages', new Messages())
+
+app.service('messages').hooks({
+  before: {
+    create: setTimestamp('createdAt'),
+    update: setTimestamp('updatedAt')
+  }
+})
 
 export default Messages
